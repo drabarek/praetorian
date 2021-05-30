@@ -1,0 +1,28 @@
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\User: 'plaintext'
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        in_memory:
+            memory:
+                users:
+                    api:
+                        password: '%env(AUTH_PASS)%'
+    firewalls:
+        main:
+            http_basic:
+                provider: in_memory
+            entry_point: App\Security\AuthenticationEntryPoint
+            anonymous: true
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+        # Easy way to control access for large sections of your site
+        # Note: Only the *first* access control that matches will be used
+        # access_control:
+        # - { path: ^/profile, roles: ROLE_USER }
