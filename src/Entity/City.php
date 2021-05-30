@@ -23,6 +23,7 @@ class City
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\Type(type={"alpha"})
+     * @Assert\NotBlank(message="City name can't be blank")
      * @Assert\Length(
      *      min = 2,
      *      max = 50,
@@ -35,6 +36,7 @@ class City
     /**
      * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="cities")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Wrong CountryId")
      */
     private $Country;
 

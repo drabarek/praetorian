@@ -26,31 +26,20 @@ class CityService
         $this->countryRepository = $countryRepository;
     }
 
-    public function add(array $content): void
+    public function add(City $city): void
     {
-        $city = new City();
-        $city->setName($content['name']);
-
-        $country = $this->countryRepository->findOneByCanonicalName($content['country']);
-        if (null === $country) {
-            throw new InvalidArgumentException('Country not found');
-        }
-
-        $city->setCountry($country);
-
-        $this->validate($city);
         $this->em->persist($city);
         $this->em->flush();
     }
 
-    private function validate(City $city): void
+    public function validate(City $city): void
     {
         $errors = $this->validator->validate($city);
 
         if (0 !== count($errors)) {
             $messages = [];
             foreach ($errors as $error) {
-                $messages[] = sprintf($error->getMessage() . ': `%s`', $city->getName());
+                $messages[] = $error->getMessage();
             }
             throw new InvalidArgumentException(implode("; ", $messages));
         }
